@@ -7,6 +7,7 @@ fn main() -> std::io::Result<()> {
     let cli_args: Vec<String> = env::args().collect();
     if let Some(file_path) = cli_args.get(1) {
         let answer = from_filepath(file_path);
+        println!("{answer}");
         fs::write("out.txt", answer)?;
     } else {
         println!("No pgn provided");
