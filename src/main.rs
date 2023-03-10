@@ -55,7 +55,7 @@ fn from_filepath(file_path: &str) -> String {
             println!("Couldn't open file because: {e}");
         }
     }
-    
+
     let move_number = pgn_move_number_number / 2;
     // pgn_move_number_number & 1 == 1 is a bitwise way of checking for odd/even
     // equivalent to pgn_move_number_number % 2 == 1
