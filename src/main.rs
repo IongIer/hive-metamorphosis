@@ -15,33 +15,30 @@ fn main() -> std::io::Result<()> {
 }
 
 fn from_filepath(file_path: &str) -> String {
+    // lines starting with a number are moves and the () capture the move
     let turn = Regex::new(r"^\d+\. (.*)").expect("This regex should compile");
+
+    // captures the gametype out of line starting with [GameType
     let game_type =
         Regex::new(r#"\[GameType "(Base[+MLP]*)"\]"#).expect("This regex should compile");
-    let result = Regex::new(r#"^\[Result "(.*)"\]"#).expect("This regex should compile");
+
     let mut extract_gametype = String::new();
     let mut moves = String::new();
-    let mut extract_result = String::new();
+    let result = ";InProgress";
     let mut pgn_move_number_number: u8 = 0;
     match File::open(file_path) {
         Ok(file) => {
             for line in io::BufReader::new(file).lines().flatten() {
-                if line.len() == 0 {
+                if line.is_empty() {
                     continue;
                 }
-                if game_type.is_match(&line) {
+                if extract_gametype.is_empty() && game_type.is_match(&line) {
                     let caps = game_type.captures(&line).unwrap();
                     if let Some(mtch) = caps.get(1) {
                         extract_gametype += mtch.as_str();
                     }
                 }
-                if result.is_match(&line) {
-                    let caps = result.captures(&line).unwrap();
-                    if let Some(mtch) = caps.get(1) {
-                        extract_result += ";";
-                        extract_result += mtch.as_str();
-                    }
-                }
+
                 if turn.is_match(&line) {
                     let caps = turn.captures(&line).unwrap();
                     if let Some(mtch) = caps.get(1) {
@@ -55,7 +52,7 @@ fn from_filepath(file_path: &str) -> String {
             }
         }
         Err(e) => {
-            println!("Couldn't open file because: {}", e);
+            println!("Couldn't open file because: {e}");
         }
     }
 
@@ -68,8 +65,8 @@ fn from_filepath(file_path: &str) -> String {
     };
     let answer = "newgame ".to_string()
         + extract_gametype.as_str()
-        + extract_result.as_str()
+        + result
         + to_move.as_str()
         + moves.as_str();
-    return answer;
+    answer
 }
