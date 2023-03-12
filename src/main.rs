@@ -2,20 +2,25 @@ use regex::Regex;
 use std::env;
 use std::fs::{self, File};
 use std::io::{self, BufRead};
+use std::path::Path;
 
 fn main() -> std::io::Result<()> {
     let cli_args: Vec<String> = env::args().collect();
     if let Some(file_path) = cli_args.get(1) {
-        let answer = from_filepath(file_path);
-        println!("{answer}");
-        fs::write("out.txt", answer)?;
+        let path = Path::new(file_path);
+        let file_stem = path.file_stem().unwrap();
+        let mut new_file_path = env::current_dir().unwrap();
+        new_file_path.push(file_stem);
+        new_file_path.set_extension("txt");
+        let answer = from_filepath(path);
+        fs::write(new_file_path, answer)?;
     } else {
         println!("No pgn provided");
     }
     Ok(())
 }
 
-fn from_filepath(file_path: &str) -> String {
+fn from_filepath(file_path: &Path) -> String {
     // lines starting with a number are moves and the () capture the move
     let turn = Regex::new(r"^\d+\. (.*)").expect("This regex should compile");
 
