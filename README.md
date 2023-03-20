@@ -4,4 +4,4 @@ Small scripts that transform different ways of representing games of Hive from o
 
 Currently only a PGN -> [UHP string](https://github.com/jonthysell/Mzinga/wiki/UniversalHiveProtocol) converter is implemented
 
-By running hive-metamorphosis "path to pgn file" the script will convert the pgn into a UHP string and save it in ./out.txt 
+Usage: "hive-metamorphosis -p /path/to/pgn_file_or_folder -m uhp" will convert a single pgn/all the pgn's in the provided folder into uhp strings in a /uhp folder under the provided path, the optional -v flag also outputs the converted strings to the terminal
