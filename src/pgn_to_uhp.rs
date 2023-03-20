@@ -1,16 +1,17 @@
 use regex::Regex;
-use std::env;
 use std::fs::{self, File};
 use std::io::{self, BufRead};
 use std::path::Path;
 
-pub fn create_output_uhp_string(file_path: &String) -> std::io::Result<()> {
-    let path = Path::new(file_path);
-    let file_stem = path.file_stem().unwrap();
-    let mut new_file_path = env::current_dir().unwrap();
+pub fn create_output_uhp_string(file_path: &Path) -> std::io::Result<()> {
+    let file_stem = file_path.file_stem().unwrap();
+    let parent_dir = file_path.parent().unwrap();
+    let mut new_file_path = parent_dir.to_path_buf();
+    new_file_path.push("uhp");
+    fs::create_dir_all(&new_file_path)?;
     new_file_path.push(file_stem);
     new_file_path.set_extension("txt");
-    let answer = from_pgn(path);
+    let answer = from_pgn(file_path);
     fs::write(new_file_path, answer)
 }
 
