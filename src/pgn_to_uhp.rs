@@ -3,7 +3,7 @@ use std::fs::{self, File};
 use std::io::{self, BufRead};
 use std::path::Path;
 
-pub fn create_output_uhp_string(file_path: &Path) -> std::io::Result<()> {
+pub fn create_output_uhp_string(file_path: &Path, verbose: bool) -> std::io::Result<()> {
     let file_stem = file_path.file_stem().unwrap();
     let parent_dir = file_path.parent().unwrap();
     let mut new_file_path = parent_dir.to_path_buf();
@@ -12,6 +12,9 @@ pub fn create_output_uhp_string(file_path: &Path) -> std::io::Result<()> {
     new_file_path.push(file_stem);
     new_file_path.set_extension("txt");
     let answer = from_pgn(file_path);
+    if verbose {
+        println!("{answer}")
+    }
     fs::write(new_file_path, answer)
 }
 

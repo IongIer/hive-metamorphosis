@@ -9,9 +9,9 @@ use std::path::Path;
 fn main() -> std::io::Result<()> {
     let cli_args = CliArgs::parse();
     let file_path = Path::new(&cli_args.path);
-    let _verbose = &cli_args.verbose;
+    let verbose = &cli_args.verbose;
     match &cli_args.mode {
-        args::Mode::Uhp => create_output_uhp_string(file_path)?,
+        args::Mode::Uhp => create_output_uhp_string(file_path, *verbose)?,
         args::Mode::Pgn => {}
         args::Mode::Sgf => {}
     }

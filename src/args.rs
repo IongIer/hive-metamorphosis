@@ -25,10 +25,6 @@ pub struct CliArgs {
         value_name = "Conversion mode"
     )]
     pub mode: Mode,
-    #[clap(
-        short ='v',
-        long = "verbose",
-        value_name = "Verbose output",
-    )]
+    #[clap(short = 'v', long = "verbose", value_name = "Verbose output")]
     pub verbose: bool,
 }
