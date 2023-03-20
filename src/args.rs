@@ -4,7 +4,6 @@ use clap::{Parser, ValueEnum};
 pub enum Mode {
     Uhp,
     Pgn,
-    Sgf,
 }
 
 #[derive(Parser)]

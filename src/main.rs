@@ -1,6 +1,5 @@
 mod args;
 mod pgn_to_uhp;
-
 use args::CliArgs;
 use clap::Parser;
 use pgn_to_uhp::create_output_uhp_string;
@@ -34,7 +33,6 @@ fn main() -> std::io::Result<()> {
             }
         }
         args::Mode::Pgn => {}
-        args::Mode::Sgf => {}
     }
     Ok(())
 }
