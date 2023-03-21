@@ -1,10 +1,10 @@
 mod args;
 mod pgn_to_uhp;
+use std::{fs, path::Path};
+
 use args::CliArgs;
 use clap::Parser;
 use pgn_to_uhp::create_output_uhp_string;
-use std::fs;
-use std::path::Path;
 
 fn main() -> std::io::Result<()> {
     let cli_args = CliArgs::parse();

@@ -1,7 +1,10 @@
+use std::{
+    fs::{self, File},
+    io::{self, BufRead},
+    path::Path,
+};
+
 use regex::Regex;
-use std::fs::{self, File};
-use std::io::{self, BufRead};
-use std::path::Path;
 
 pub fn create_output_uhp_string(file_path: &Path, verbose: bool) -> std::io::Result<()> {
     let file_stem = file_path.file_stem().unwrap();
