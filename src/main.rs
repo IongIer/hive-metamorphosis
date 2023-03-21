@@ -10,7 +10,8 @@ fn main() -> std::io::Result<()> {
     let cli_args = CliArgs::parse();
     let file_path = Path::new(&cli_args.path);
     let verbose = &cli_args.verbose;
-    let partial_closure_uhp: &dyn Fn(&Path) -> std::io::Result<()> = &|x| create_output_uhp_string(x, *verbose);    
+    let partial_closure_uhp: &dyn Fn(&Path) -> std::io::Result<()> =
+        &|x| create_output_uhp_string(x, *verbose);
     match &cli_args.mode {
         args::Mode::Uhp => {
             if let Some(ext) = file_path.extension() {
@@ -20,7 +21,7 @@ fn main() -> std::io::Result<()> {
                     panic!("File is not a PGN");
                 }
             } else {
-                process_many(file_path, "pgn" , partial_closure_uhp)
+                process_many(file_path, "pgn", partial_closure_uhp)
             }
         }
         args::Mode::Pgn => {}
@@ -28,7 +29,7 @@ fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-fn process_many(file_path: &Path, extension: &str, func: &dyn Fn(&Path) -> std::io::Result<()> )  {
+fn process_many(file_path: &Path, extension: &str, func: &dyn Fn(&Path) -> std::io::Result<()>) {
     let files = fs::read_dir(file_path).unwrap();
     files
         .filter_map(Result::ok)
@@ -40,6 +41,4 @@ fn process_many(file_path: &Path, extension: &str, func: &dyn Fn(&Path) -> std::
             }
         })
         .try_for_each(|file_to_process| func(file_to_process.path().as_ref()));
-
-
 }
