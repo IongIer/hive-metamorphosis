@@ -21,7 +21,7 @@ fn main() -> std::io::Result<()> {
                     panic!("File is not a PGN");
                 }
             } else {
-                process_many(file_path, "pgn", partial_closure_uhp)
+                process_many(file_path, "pgn", partial_closure_uhp)?;
             }
         }
         args::Mode::Pgn => {}
@@ -29,7 +29,11 @@ fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-fn process_many(file_path: &Path, extension: &str, func: &dyn Fn(&Path) -> std::io::Result<()>) {
+fn process_many(
+    file_path: &Path,
+    extension: &str,
+    func: &dyn Fn(&Path) -> std::io::Result<()>,
+) -> std::io::Result<()> {
     let files = fs::read_dir(file_path).unwrap();
     files
         .filter_map(Result::ok)
@@ -40,5 +44,6 @@ fn process_many(file_path: &Path, extension: &str, func: &dyn Fn(&Path) -> std::
                 false
             }
         })
-        .try_for_each(|file_to_process| func(file_to_process.path().as_ref()));
+        .try_for_each(|file_to_process| func(file_to_process.path().as_ref()))?;
+    Ok(())
 }
